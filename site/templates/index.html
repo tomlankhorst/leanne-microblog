@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="feed">
+
+  {% if not posts %}
+  <div class="empty">
+    <p>Nothing here yet. Send a message via Signal to get started.</p>
+  </div>
+  {% endif %}
+
+  {% for post in posts %}
+  <article class="card type-{{ post.type }}">
+
+    <div class="card-meta">
+      <time datetime="{{ post.date_iso }}">{{ post.date_display }}</time>
+      <span class="tag tag-{{ post.type }}">{{ post.type }}</span>
+    </div>
+
+    {% if post.title %}
+    <h2 class="card-title">
+      <a href="/post/{{ post.slug }}.html">{{ post.title }}</a>
+    </h2>
+    {% endif %}
+
+    <div class="card-body">
+      {{ post.body | safe }}
+    </div>
+
+    {% if post.images %}
+    <div class="card-images {% if post.images | length > 1 %}grid-{{ [post.images | length, 3] | min }}{% endif %}">
+      {% for img in post.images %}
+      <a href="/images/{{ img }}" class="img-link">
+        <img src="/images/{{ img }}" alt="" loading="lazy">
+      </a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <a href="/post/{{ post.slug }}.html" class="permalink" aria-label="Permalink">→</a>
+
+  </article>
+  {% endfor %}
+
+</div>
+{% endblock %}

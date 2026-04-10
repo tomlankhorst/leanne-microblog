@@ -1,0 +1,6 @@
+.env
+signal-data/
+public/
+__pycache__/
+*.pyc
+.DS_Store

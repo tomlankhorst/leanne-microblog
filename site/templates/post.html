@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{% if post.title %}{{ post.title }}{% else %}{{ post.date_display }}{% endif %}{% endblock %}
+
+{% block content %}
+<article class="card single type-{{ post.type }}">
+
+  <div class="card-meta">
+    <time datetime="{{ post.date_iso }}">{{ post.date_display }}</time>
+    <span class="tag tag-{{ post.type }}">{{ post.type }}</span>
+  </div>
+
+  {% if post.title %}
+  <h1 class="card-title">{{ post.title }}</h1>
+  {% endif %}
+
+  <div class="card-body">
+    {{ post.body | safe }}
+  </div>
+
+  {% if post.images %}
+  <div class="card-images {% if post.images | length > 1 %}grid-{{ [post.images | length, 3] | min }}{% endif %}">
+    {% for img in post.images %}
+    <a href="/images/{{ img }}" class="img-link">
+      <img src="/images/{{ img }}" alt="" loading="lazy">
+    </a>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</article>
+
+<a href="/" class="back-link">← back to feed</a>
+{% endblock %}

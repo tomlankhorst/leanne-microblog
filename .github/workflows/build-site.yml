@@ -1,0 +1,32 @@
+name: Build & Deploy Microblog
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "posts/**"
+      - "site/**"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install markdown jinja2 pyyaml
+
+      - run: python site/build.py
+
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: ${{ secrets.CUSTOM_DOMAIN }}
